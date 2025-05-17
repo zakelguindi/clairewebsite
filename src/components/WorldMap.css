@@ -1,0 +1,149 @@
+.world-map-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.world-map-container h2 {
+  font-family: "Times New Roman", serif;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.map-wrapper {
+  width: 100%;
+  height: 500px;
+  margin-bottom: 20px;
+  border: 1px solid #e2e2e2;
+}
+
+.map-placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: #f7f7f7;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.continent {
+  position: absolute;
+  font-family: Georgia, serif;
+  font-size: 14px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e8e8e8;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.continent-na {
+  top: 25%;
+  left: 20%;
+  width: 120px;
+  height: 80px;
+}
+
+.continent-sa {
+  top: 60%;
+  left: 30%;
+  width: 80px;
+  height: 120px;
+}
+
+.continent-eu {
+  top: 25%;
+  left: 50%;
+  width: 80px;
+  height: 60px;
+}
+
+.continent-af {
+  top: 45%;
+  left: 50%;
+  width: 100px;
+  height: 120px;
+}
+
+.continent-as {
+  top: 30%;
+  left: 65%;
+  width: 140px;
+  height: 100px;
+}
+
+.continent-oc {
+  top: 65%;
+  left: 80%;
+  width: 80px;
+  height: 60px;
+}
+
+.continent-an {
+  top: 85%;
+  left: 45%;
+  width: 120px;
+  height: 40px;
+}
+
+.map-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.map-control {
+  font-family: Georgia, serif;
+  font-size: 14px;
+  color: #333;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.map-control:hover {
+  background-color: #e0e0e0;
+}
+
+.map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 15px;
+  border-top: 1px solid #e2e2e2;
+  margin-top: 10px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}
+
+.legend-label {
+  font-family: Georgia, serif;
+  font-size: 14px;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .map-wrapper {
+    height: 350px;
+  }
+} 

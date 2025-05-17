@@ -1,0 +1,134 @@
+.twitter-feed-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.twitter-header {
+  text-align: center;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #e2e2e2;
+  padding-bottom: 15px;
+}
+
+.twitter-header h2 {
+  font-family: "Times New Roman", serif;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.twitter-subtitle {
+  font-family: Georgia, serif;
+  font-size: 16px;
+  color: #666;
+  font-style: italic;
+}
+
+.twitter-feed {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.tweet {
+  margin-bottom: 25px;
+  padding: 15px;
+  border: 1px solid #e2e2e2;
+  border-radius: 5px;
+  background-color: #fff;
+  transition: background-color 0.2s;
+}
+
+.tweet:hover {
+  background-color: #f9f9f9;
+}
+
+.tweet-profile {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.profile-pic-placeholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  margin-right: 12px;
+}
+
+.profile-info {
+  flex-grow: 1;
+}
+
+.profile-name {
+  display: block;
+  font-family: "Times New Roman", serif;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.profile-username {
+  display: block;
+  font-family: Georgia, serif;
+  font-size: 14px;
+  color: #666;
+}
+
+.tweet-timestamp {
+  font-family: Georgia, serif;
+  font-size: 12px;
+  color: #999;
+}
+
+.tweet-content {
+  font-family: Georgia, serif;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.tweet-actions {
+  display: flex;
+  justify-content: space-between;
+  max-width: 250px;
+}
+
+.tweet-action {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.tweet-action:hover {
+  color: #1da1f2;
+}
+
+.action-icon {
+  font-size: 16px;
+}
+
+.action-count {
+  font-family: Georgia, serif;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .tweet {
+    padding: 12px;
+  }
+  
+  .profile-pic-placeholder {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .tweet-content {
+    font-size: 14px;
+  }
+} 

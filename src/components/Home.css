@@ -1,0 +1,180 @@
+.home-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.main-content {
+  flex: 3;
+  min-width: 300px;
+  padding-right: 40px;
+}
+
+.sidebar {
+  flex: 1;
+  min-width: 250px;
+  padding-left: 20px;
+  border-left: 1px solid #e2e2e2;
+}
+
+.lead-story {
+  margin-bottom: 40px;
+  border-bottom: 1px solid #e2e2e2;
+  padding-bottom: 30px;
+}
+
+.lead-story h2 {
+  font-family: "Times New Roman", serif;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.lead-image-placeholder {
+  width: 100%;
+  height: 350px;
+  background-color: #f0f0f0;
+  margin-bottom: 20px;
+}
+
+.lead-paragraph {
+  font-family: Georgia, serif;
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+.lead-story p {
+  font-family: Georgia, serif;
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.secondary-stories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.story {
+  flex: 1;
+  min-width: 250px;
+  margin-bottom: 30px;
+}
+
+.story h3 {
+  font-family: "Times New Roman", serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  line-height: 1.3;
+}
+
+.story p {
+  font-family: Georgia, serif;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #333;
+}
+
+.sidebar-section {
+  margin-bottom: 30px;
+}
+
+.sidebar-section h4 {
+  font-family: "Times New Roman", serif;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.sidebar-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-section li {
+  font-family: Georgia, serif;
+  font-size: 15px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+  cursor: pointer;
+}
+
+.sidebar-section li:hover {
+  color: #000;
+}
+
+@media (max-width: 768px) {
+  .home-page {
+    flex-direction: column;
+  }
+  
+  .main-content {
+    padding-right: 0;
+  }
+  
+  .sidebar {
+    border-left: none;
+    border-top: 1px solid #e2e2e2;
+    padding-left: 0;
+    padding-top: 20px;
+    margin-top: 20px;
+  }
+}
+
+/* === Three-column grid layout for Home page === */
+.home-page-grid {
+  display: grid; /* [Three-column grid layout starts here] */
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 16px;
+  background: #fff;
+}
+
+.home-main-row {
+  display: contents; /* Let grid children be direct columns */
+}
+
+.home-col {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.left-col {
+  /* Left column: Twitter Feed */
+}
+.center-col {
+  /* Center column: Headlines + Map */
+}
+.right-col {
+  /* Right column: Key Features + Op-Eds */
+}
+
+/* Responsive: stack columns on small screens */
+@media (max-width: 900px) {
+  .home-page-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 16px 4px;
+  }
+  .home-col {
+    gap: 24px;
+  }
+}
+
+/* [End of three-column grid layout section] */ 

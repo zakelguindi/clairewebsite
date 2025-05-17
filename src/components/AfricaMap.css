@@ -1,0 +1,85 @@
+/* === AfricaMap Page Styles === */
+.africa-map-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 16px;
+  background: #fff;
+}
+
+.africa-map-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.africa-map-header h1 {
+  font-family: 'Times New Roman', serif;
+  font-size: 36px;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.africa-map-layout {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.africa-map-sidebar {
+  background: #f7f7fa;
+  border-radius: 10px;
+  padding: 24px 16px;
+  min-width: 160px;
+  max-width: 220px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  border: 1px solid #e2e2e2;
+}
+
+.africa-map-sidebar h2 {
+  font-family: 'Times New Roman', serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.africa-map-sidebar ul {
+  list-style: disc inside;
+  font-family: Georgia, serif;
+  font-size: 16px;
+  color: #444;
+  margin: 0;
+  padding: 0;
+}
+
+.africa-map-sidebar li {
+  margin-bottom: 10px;
+}
+
+.africa-map-container {
+  width: 100%;
+  min-width: 300px;
+  max-width: 700px;
+  margin: 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1.5px solid #e2e2e2;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  background: #eaf6fb;
+}
+
+@media (max-width: 900px) {
+  .africa-map-layout {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .africa-map-sidebar {
+    max-width: 100%;
+    margin-bottom: 12px;
+  }
+  .africa-map-container {
+    max-width: 100%;
+  }
+}
+/* [End of AfricaMap Page Styles] */ 

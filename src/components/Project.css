@@ -1,0 +1,131 @@
+/* === Project Detail Page Styles === */
+.project-detail-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 16px;
+  background: #fff;
+}
+
+.project-detail-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.project-detail-header h1 {
+  font-family: 'Times New Roman', serif;
+  font-size: 36px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.project-detail-layout {
+  display: grid;
+  grid-template-columns: 2.5fr 1fr;
+  gap: 36px;
+  align-items: flex-start;
+}
+
+.project-detail-main {
+  background: #f7f7fa;
+  border-radius: 12px;
+  padding: 32px 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+.project-detail-image {
+  width: 100%;
+  max-width: 420px;
+  height: 180px;
+  margin: 0 auto 24px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.projects-image-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #e0e7ef;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.project-detail-description p {
+  font-family: Georgia, serif;
+  font-size: 17px;
+  color: #333;
+  margin-bottom: 14px;
+}
+
+.project-detail-sidebar {
+  background: #f7f7fa;
+  border-radius: 10px;
+  padding: 24px 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  border: 1px solid #e2e2e2;
+}
+
+.project-detail-sidebar h2 {
+  font-family: 'Times New Roman', serif;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.project-sidebar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.project-sidebar-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 10px 8px;
+  border: 1px solid #e2e2e2;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
+
+.project-sidebar-image {
+  width: 40px;
+  height: 40px;
+  background: #e0e7ef;
+  border-radius: 6px;
+}
+
+.project-sidebar-title {
+  font-family: Georgia, serif;
+  font-size: 15px;
+  color: #333;
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .project-detail-layout {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .project-detail-sidebar {
+    margin-top: 18px;
+  }
+}
+@media (max-width: 600px) {
+  .project-detail-page {
+    padding: 12px 2px;
+  }
+  .project-detail-header h1 {
+    font-size: 22px;
+  }
+  .project-detail-main {
+    padding: 14px 6px;
+  }
+  .project-detail-image {
+    max-width: 100%;
+    height: 100px;
+  }
+}
+/* [End of Project Detail Page Styles] */ 

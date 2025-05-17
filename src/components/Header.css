@@ -1,0 +1,137 @@
+.nyt-header {
+  border-bottom: 1px solid #e2e2e2;
+  padding: 10px 0;
+  width: 100%;
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* === Header Layout Styles === */
+.header-top-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 0;
+  flex-wrap: wrap;
+}
+
+.header-location {
+  font-family: Georgia, serif;
+  font-size: 16px;
+  color: #666;
+  min-width: 120px;
+  flex: 1;
+  text-align: left;
+}
+
+.masthead {
+  flex: 2;
+  text-align: center;
+}
+
+.masthead h1 {
+  font-family: 'Chomsky', 'Times New Roman', serif;
+  font-size: 42px;
+  font-weight: 700;
+  margin: 0;
+  padding: 5px 0 0 0;
+  letter-spacing: 0.5px;
+}
+
+.date {
+  font-family: Georgia, serif;
+  font-size: 15px;
+  color: #666;
+  margin: 4px 0 0 0;
+}
+
+.header-contact {
+  font-family: Georgia, serif;
+  font-size: 16px;
+  color: #666;
+  min-width: 180px;
+  text-align: right;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.header-contact a {
+  color: #2980b9;
+  text-decoration: none;
+  margin-left: 6px;
+}
+.header-contact a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .header-top-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .masthead {
+    text-align: center;
+  }
+  .header-contact {
+    align-items: flex-start;
+    text-align: left;
+    font-size: 15px;
+  }
+}
+/* [End of Header Layout Styles] */
+
+.main-nav {
+  border-top: 1px solid #e2e2e2;
+  border-bottom: 3px double #e2e2e2;
+  padding: 10px 0;
+}
+
+.main-nav ul {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.main-nav li {
+  margin: 0 20px;
+}
+
+.main-nav a {
+  font-family: Georgia, serif;
+  font-size: 16px;
+  color: #333;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  padding: 5px 0;
+  transition: color 0.2s;
+}
+
+.main-nav a:hover {
+  color: #888;
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .masthead h1 {
+    font-size: 32px;
+  }
+  
+  .main-nav ul {
+    flex-wrap: wrap;
+  }
+  
+  .main-nav li {
+    margin: 0 10px;
+  }
+} 
