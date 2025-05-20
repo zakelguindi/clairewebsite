@@ -76,80 +76,148 @@
 }
 
 .admin-form {
-  background: #f7f7fa;
-  padding: 24px;
+  background: white;
+  padding: 2rem;
   border-radius: 8px;
-  border: 1px solid #e2e2e2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
 }
 
 .admin-form h3 {
-  font-family: 'Times New Roman', serif;
-  font-size: 24px;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #e2e2e2;
+  margin-bottom: 1.5rem;
+  color: #333;
 }
 
 .form-group {
-  margin-bottom: 16px;
+  margin-bottom: 1.5rem;
 }
 
 .form-group label {
   display: block;
-  font-family: Georgia, serif;
-  font-size: 16px;
-  margin-bottom: 8px;
-  color: #333;
+  margin-bottom: 0.5rem;
+  color: #666;
+  font-weight: 500;
 }
 
-.form-group input,
+.form-group input[type="text"],
+.form-group input[type="url"],
+.form-group input[type="date"],
 .form-group textarea {
   width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #e2e2e2;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
   border-radius: 4px;
-  font-family: Georgia, serif;
-  font-size: 16px;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="url"]:focus,
+.form-group input[type="date"]:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
 
 .form-group textarea {
-  min-height: 150px;
+  min-height: 100px;
   resize: vertical;
+}
+
+.form-group input[type="checkbox"] {
+  margin-right: 0.5rem;
 }
 
 .form-actions {
   display: flex;
-  gap: 12px;
-  margin-top: 24px;
+  gap: 1rem;
+  margin-top: 2rem;
 }
 
 .submit-btn,
 .cancel-btn {
-  padding: 12px 24px;
+  padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 4px;
-  font-family: Georgia, serif;
-  font-size: 16px;
+  font-size: 1rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background-color 0.2s;
 }
 
 .submit-btn {
-  background: #2980b9;
+  background-color: #007bff;
   color: white;
 }
 
 .submit-btn:hover {
-  background: #2471a3;
+  background-color: #0056b3;
 }
 
 .cancel-btn {
-  background: #e74c3c;
+  background-color: #6c757d;
   color: white;
 }
 
 .cancel-btn:hover {
-  background: #c0392b;
+  background-color: #5a6268;
+}
+
+.selected-country {
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.country-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.country-code {
+  background-color: #e9ecef;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.875rem;
+  color: #495057;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.form-help-text {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+input[type="color"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 40px;
+  padding: 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 4px;
 }
 
 .content-list {
@@ -308,44 +376,156 @@
   background-color: #f0f0f0;
 }
 
-.selected-country {
-  margin-top: 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.country-code {
-  display: inline-block;
-  padding: 4px 8px;
-  background-color: #eef3fa;
-  border: 1px solid #b3c6e0;
-  border-radius: 4px;
-  font-family: monospace;
-  font-size: 14px;
-  color: #2980b9;
+.selected-country:empty::before {
+  content: 'Select a country on the map';
+  color: #6c757d;
+  font-style: italic;
 }
 
 .map-container {
+  width: 100%;
+  height: 500px;
   margin-bottom: 2rem;
   border: 1px solid #e2e2e2;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
-.selected-country {
-  padding: 8px 12px;
-  background-color: #f8f9fa;
-  border: 1px solid #e2e2e2;
+.map-container .mapboxgl-map {
+  width: 100%;
+  height: 100%;
+}
+
+.map-controls {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+  display: flex;
+  gap: 10px;
+}
+
+.mode-switch {
+  padding: 8px 16px;
+  background-color: white;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  font-family: Georgia, serif;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.mode-switch:hover {
+  background-color: #f8f9fa;
+  border-color: #999;
+}
+
+.mode-switch.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #0056b3;
+}
+
+.mode-switch.active:hover {
+  background-color: #0056b3;
+}
+
+.popup-form {
+  padding: 12px;
+  min-width: 300px;
+}
+
+.popup-header {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.popup-header h3 {
+  margin: 0 0 4px 0;
   font-size: 16px;
   color: #333;
 }
 
-.selected-country:empty::before {
-  content: 'Select a country on the map';
-  color: #6c757d;
-  font-style: italic;
+.popup-header .country-code {
+  margin: 0;
+  font-size: 12px;
+  color: #666;
+  font-family: monospace;
+}
+
+.popup-form .form-group {
+  margin-bottom: 12px;
+}
+
+.popup-form .form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #666;
+}
+
+.popup-form .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.popup-form textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.popup-form textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.popup-form .form-actions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.popup-form .submit-btn {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.popup-form .submit-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Override Mapbox Popup styles */
+.mapboxgl-popup-content {
+  padding: 0 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.mapboxgl-popup-close-button {
+  padding: 8px !important;
+  font-size: 16px !important;
+  color: #666 !important;
+}
+
+.mapboxgl-popup-close-button:hover {
+  background-color: #f8f9fa !important;
+  color: #333 !important;
 } 

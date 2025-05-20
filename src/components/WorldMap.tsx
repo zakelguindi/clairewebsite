@@ -1,90 +1,129 @@
-import React, { useState, useRef } from 'react';
-import { MapContainer, TileLayer, GeoJSON, Popup, ZoomControl, useMap } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
+import React, { useMemo, useState } from 'react';
+import { Map, Source, Layer, NavigationControl, Popup } from 'react-map-gl/mapbox';
+import type { MapMouseEvent } from 'mapbox-gl';
+import type { FillLayer, LineLayer } from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import './WorldMap.css';
-import { defaultMapSettings, CountryData } from '../data/mapData';
+import mapboxgl from 'mapbox-gl';
 
-// Reset view component
-const ResetView = ({ center, zoom }: { center: [number, number], zoom: number }) => {
-  const map = useMap();
-  const handleReset = () => {
-    map.setView(center, zoom);
-  };
-  return null;
-};
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
-const WorldMap: React.FC = () => {
-  const mapRef = useRef(null);
-  const [selectedCountry, setSelectedCountry] = useState<CountryData | null>(null);
+interface SelectedCountry {
+  name: string;
+  code: string;
+  lng: number;
+  lat: number;
+}
 
-  const handleResetView = () => {
-    if (mapRef.current) {
-      const map = mapRef.current as L.Map;
-      map.setView(
-        defaultMapSettings.worldMap.defaultCenter as L.LatLngTuple,
-        defaultMapSettings.worldMap.defaultZoom
-      );
+const WorldMap = () => {
+  const [selectedCountry, setSelectedCountry] = useState<SelectedCountry | null>(null);
+  const [highlighted, setHighlighted] = useState<string[]>([]);
+
+  const handleClick = (e: MapMouseEvent) => {
+    if (!e.features || e.features.length === 0) return;
+    
+    const countryFeature = e.features[0];
+    if (countryFeature?.properties) {
+      const name = countryFeature.properties.name_en;
+      const code = countryFeature.properties.iso_3166_1_alpha_3;
+
+      setSelectedCountry({
+        name,
+        code,
+        lng: e.lngLat.lng,
+        lat: e.lngLat.lat
+      });
+
+      if (!highlighted.includes(code)) {
+        console.log('highlighted', highlighted);
+        setHighlighted([...highlighted, code]);
+      }
     }
   };
 
-  const onEachFeature = (feature: any, layer: any) => {
-    layer.on({
-      click: (e: any) => {
-        const countryData = feature.properties as CountryData;
-        setSelectedCountry(countryData);
-        layer.bindPopup(countryData.popupContent || 'No information available').openPopup();
-      }
-    });
-  };
+  const highlightFilter = highlighted.length > 0
+  ? ['in', 'iso_3166_1_alpha_3', ...highlighted]
+  : ['in', 'iso_3166_1_alpha_3', '']; // fallback to harmless filter
 
-  const style = (feature: any) => {
-    return {
-      fillColor: feature.properties.highlighted ? '#ff0000' : '#3388ff',
-      fillOpacity: 0.7,
-      weight: 1,
-      color: '#fff',
-      opacity: 1
-    };
-  };
+  const highlightLayer: FillLayer = useMemo(() => ({
+    id: 'highlight-layer',
+    type: 'fill',
+    source: 'country-boundaries',
+    'source-layer': 'country_boundaries',
+    paint: {
+      'fill-color': '#00bcd4',
+      'fill-opacity': 0.5
+    },
+    filter: highlightFilter
+  }), [highlighted]);
+
+
+  const borderLayer: LineLayer = useMemo(() => ({
+    id: 'border-layer',
+    type: 'line',
+    source: 'country-boundaries',
+    'source-layer': 'country_boundaries',
+    paint: {
+      'line-color': '#333',
+      'line-width': 1
+    }
+  }), []);
 
   return (
-    <div className="world-map-container">
-      <h2>Interactive World Map</h2>
-      <div className="map-wrapper">
-        <MapContainer
-          center={defaultMapSettings.worldMap.defaultCenter as [number, number]}
-          zoom={defaultMapSettings.worldMap.defaultZoom}
-          minZoom={defaultMapSettings.worldMap.minZoom}
-          maxZoom={defaultMapSettings.worldMap.maxZoom}
-          style={{ height: '100%', width: '100%' }}
-          scrollWheelZoom={true}
-          ref={mapRef}
+    <div style={{ width: '90%', height: '90vh' }}>
+      <Map
+        mapboxAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+        initialViewState={{ longitude: 0, latitude: 20, zoom: 1.5 }}
+        mapStyle="mapbox://styles/mapbox/light-v11"
+        interactiveLayerIds={['highlight-layer', 'border-layer']}
+        onClick={handleClick}
+        doubleClickZoom={false}
+      >
+        <NavigationControl position="top-right" />
+
+        <Source
+          id="country-boundaries"
+          type="vector"
+          url="mapbox://mapbox.country-boundaries-v1"
         >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <ZoomControl position="bottomright" />
-          <ResetView 
-            center={defaultMapSettings.worldMap.defaultCenter as [number, number]}
-            zoom={defaultMapSettings.worldMap.defaultZoom}
-          />
-          {/* GeoJSON layer will be added here when we have the data */}
-        </MapContainer>
-      </div>
-      <div className="map-controls">
-        <button className="map-control" onClick={handleResetView}>
-          Reset View
-        </button>
-      </div>
-      {selectedCountry && (
-        <div className="country-info">
-          <h3>{selectedCountry.countryName}</h3>
-          <p>{selectedCountry.popupContent}</p>
-        </div>
-      )}
+          <Layer {...highlightLayer} />
+          <Layer {...borderLayer} />
+        </Source>
+
+        {selectedCountry && (
+          <Popup
+            longitude={selectedCountry.lng}
+            latitude={selectedCountry.lat}
+            onClose={() => setSelectedCountry(null)}
+            closeButton={true}
+            closeOnClick={false}
+          >
+            <div style={{ padding: '10px' }}>
+              <h3 style={{ margin: '0 0 8px 0', fontSize: '16px' }}>{selectedCountry.name}</h3>
+              <textarea 
+                placeholder="Enter description..." 
+                style={{ 
+                  width: '100%', 
+                  minHeight: '60px',
+                  padding: '8px',
+                  border: '1px solid #ccc',
+                  borderRadius: '4px'
+                }} 
+              />
+            </div>
+          </Popup>
+        )}
+      </Map>
     </div>
   );
 };
+
+// const WorldMap = () => {
+//   return (
+//     <div>
+//       <h1>World Map</h1>
+//     </div>
+//   );
+// };
 
 export default WorldMap; 

@@ -1,8 +1,12 @@
-import React, { useState, useRef } from 'react';
-import { MapContainer, TileLayer, GeoJSON, Popup, ZoomControl, useMap } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import './AfricaMap.css';
-import { defaultMapSettings, CountryData } from '../data/mapData';
+import React, { useMemo, useState } from 'react';
+import { Map, Source, Layer, NavigationControl, Popup } from 'react-map-gl/mapbox';
+import type { MapMouseEvent } from 'mapbox-gl';
+import type { FillLayer, LineLayer } from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import './WorldMap.css';
+import mapboxgl from 'mapbox-gl';
+
+mapboxgl.accessToken = process.env.PRIVATE_MAPBOX_API_KEY || '';
 
 const usInitiatives = [
   'Foreign aid',
@@ -10,7 +14,7 @@ const usInitiatives = [
   'Terrorism combat',
   'Education',
   'Military bases',
-];
+] as const;
 
 const chinaInitiatives = [
   'Infrastructure',
@@ -18,49 +22,98 @@ const chinaInitiatives = [
   'Resource extraction',
   'Belt & Road projects',
   'Telecom investments',
-];
+] as const;
 
-// Reset view component
-const ResetView = ({ center, zoom }: { center: [number, number], zoom: number }) => {
-  const map = useMap();
-  const handleReset = () => {
-    map.setView(center, zoom);
-  };
-  return null;
-};
+interface SelectedCountry {
+  name: string;
+  code: string;
+  lng: number;
+  lat: number;
+}
+
 
 const AfricaMap: React.FC = () => {
-  const mapRef = useRef(null);
-  const [selectedCountry, setSelectedCountry] = useState<CountryData | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<SelectedCountry | null>(null);
+  const [highlighted, setHighlighted] = useState<string[]>([]);
 
-  const handleResetView = () => {
-    if (mapRef.current) {
-      const map = mapRef.current as L.Map;
-      map.setView(
-        defaultMapSettings.africaMap.defaultCenter as L.LatLngTuple,
-        defaultMapSettings.africaMap.defaultZoom
-      );
+  const handleClick = (e: MapMouseEvent) => {
+    if (!e.features || e.features.length === 0) return;
+    
+    const countryFeature = e.features[0];
+    if (countryFeature?.properties) {
+      const name = countryFeature.properties.name_en;
+      const code = countryFeature.properties.iso_3166_1_alpha_3;
+
+      setSelectedCountry({
+        name,
+        code,
+        lng: e.lngLat.lng,
+        lat: e.lngLat.lat
+      });
+
+      if (!highlighted.includes(code)) {
+        console.log('highlighted', highlighted);
+        setHighlighted([...highlighted, code]);
+      }
+    }
+  };
+  const [popupInfo, setPopupInfo] = useState<{
+    longitude: number;
+    latitude: number;
+    countryName: string;
+    popupContent: string;
+  } | null>(null);
+
+  const onHover = (event: MapMouseEvent) => {
+    const feature = event.features && event.features[0];
+    if (feature) {
+      event.target.getCanvas().style.cursor = 'pointer';
+    } else {
+      event.target.getCanvas().style.cursor = '';
     }
   };
 
-  const onEachFeature = (feature: any, layer: any) => {
-    layer.on({
-      click: (e: any) => {
-        const countryData = feature.properties as CountryData;
-        setSelectedCountry(countryData);
-        layer.bindPopup(countryData.popupContent || 'No information available').openPopup();
-      }
-    });
-  };
+  const highlightFilter = highlighted.length > 0
+  ? ['in', 'iso_3166_1_alpha_3', ...highlighted]
+  : ['in', 'iso_3166_1_alpha_3', '']; // fallback to harmless filter
 
-  const style = (feature: any) => {
-    return {
-      fillColor: feature.properties.color || '#3388ff',
-      fillOpacity: 0.7,
-      weight: 1,
-      color: '#fff',
-      opacity: 1
-    };
+  const highlightLayer: FillLayer = useMemo(() => ({
+    id: 'highlight-layer',
+    type: 'fill',
+    source: 'country-boundaries',
+    'source-layer': 'country_boundaries',
+    paint: {
+      'fill-color': '#00bcd4',
+      'fill-opacity': 0.5
+    },
+    filter: highlightFilter
+  }), [highlighted]);
+
+
+  const borderLayer: LineLayer = useMemo(() => ({
+    id: 'border-layer',
+    type: 'line',
+    source: 'country-boundaries',
+    'source-layer': 'country_boundaries',
+    paint: {
+      'line-color': '#333',
+      'line-width': 1
+    }
+  }), []);
+
+  const layerStyle = {
+    id: 'countries',
+    type: 'fill' as const,
+    paint: {
+      'fill-color': [
+        'case',
+        ['has', 'color'],
+        ['get', 'color'],
+        '#3388ff'
+      ] as any,
+      'fill-opacity': 0.7,
+      'fill-outline-color': '#fff'
+    }
   };
 
   return (
@@ -75,30 +128,50 @@ const AfricaMap: React.FC = () => {
             {usInitiatives.map((item, idx) => <li key={idx}>{item}</li>)}
           </ul>
         </aside>
-        <div className="africa-map-container">
-          <MapContainer
-            center={defaultMapSettings.africaMap.defaultCenter as [number, number]}
-            zoom={defaultMapSettings.africaMap.defaultZoom}
-            minZoom={defaultMapSettings.africaMap.minZoom}
-            maxZoom={defaultMapSettings.africaMap.maxZoom}
-            style={{ height: '500px', width: '100%' }}
-            scrollWheelZoom={true}
-            ref={mapRef}
+        <div style={{ width: '70%', height: '70vh' }}>
+          <Map
+            mapboxAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+            initialViewState={{ longitude: 0, latitude: 20, zoom: 1.5 }}
+            mapStyle="mapbox://styles/mapbox/light-v11"
+            interactiveLayerIds={['highlight-layer', 'border-layer']}
+            onClick={handleClick}
+            doubleClickZoom={false}
           >
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <ZoomControl position="bottomright" />
-            <ResetView 
-              center={defaultMapSettings.africaMap.defaultCenter as [number, number]}
-              zoom={defaultMapSettings.africaMap.defaultZoom}
-            />
-            {/* GeoJSON layer will be added here when we have the data */}
-          </MapContainer>
-          <button className="reset-view-btn" onClick={handleResetView}>
-            Reset View
-          </button>
+            <NavigationControl position="top-right" />
+
+            <Source
+              id="country-boundaries"
+              type="vector"
+              url="mapbox://mapbox.country-boundaries-v1"
+            >
+              <Layer {...highlightLayer} />
+              <Layer {...borderLayer} />
+            </Source>
+
+            {selectedCountry && (
+              <Popup
+                longitude={selectedCountry.lng}
+                latitude={selectedCountry.lat}
+                onClose={() => setSelectedCountry(null)}
+                closeButton={true}
+                closeOnClick={false}
+              >
+                <div style={{ padding: '10px' }}>
+                  <h3 style={{ margin: '0 0 8px 0', fontSize: '16px' }}>{selectedCountry.name}</h3>
+                  <textarea 
+                    placeholder="Enter description..." 
+                    style={{ 
+                      width: '100%', 
+                      minHeight: '60px',
+                      padding: '8px',
+                      border: '1px solid #ccc',
+                      borderRadius: '4px'
+                    }} 
+                  />
+                </div>
+              </Popup>
+            )}
+          </Map>
         </div>
         <aside className="africa-map-sidebar right">
           <h2>China</h2>
@@ -107,12 +180,7 @@ const AfricaMap: React.FC = () => {
           </ul>
         </aside>
       </div>
-      {selectedCountry && (
-        <div className="country-info">
-          <h3>{selectedCountry.countryName}</h3>
-          <p>{selectedCountry.popupContent}</p>
-        </div>
-      )}
+      
     </div>
   );
 };

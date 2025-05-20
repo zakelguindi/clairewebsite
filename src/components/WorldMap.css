@@ -1,7 +1,13 @@
 .world-map-container {
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+}
+
+.world-map-container .mapboxgl-map {
+  width: 100%;
+  height: 100%;
 }
 
 .world-map-container h2 {
@@ -15,9 +21,16 @@
 
 .map-wrapper {
   width: 100%;
-  height: 500px;
-  margin-bottom: 20px;
+  height: 600px;
+  position: relative;
   border: 1px solid #e2e2e2;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.map-wrapper .mapboxgl-map {
+  width: 100%;
+  height: 100%;
 }
 
 .map-placeholder {
@@ -146,4 +159,49 @@
   .map-wrapper {
     height: 350px;
   }
+}
+
+.popup-content {
+  padding: 10px;
+  max-width: 300px;
+}
+
+.popup-content h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.popup-content p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.country-info {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  max-width: 300px;
+  z-index: 1;
+}
+
+.country-info h3 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.country-info p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
 } 
